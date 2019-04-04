@@ -1,10 +1,13 @@
 .code-keep-layout {
     height: 100%;
 }
+.layout {
+    margin-top: 60px;
+}
 .header {
     position: fixed;
     height: 60px;
-    line-height: 25px;
+    line-height: 60px;
     padding-left: 40px;
     font-size: 30px;
     font-weight: bold;
@@ -16,15 +19,18 @@
     background: #1976d2;
     color: #fff;
 }
+.sider {
+    position: relative;
+    width: 240px!important;
+    height: 100%;
+    max-width: 240px!important;
+    min-width: 240px!important;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: #fff;
+}
 .content {
-    margin-top: 60px;
+    overflow: hidden;
     padding-top: 0;
     padding-bottom: 0;
-}
-.content .p-col,.content .p-col-fixed {
-    padding-top: 0;
-    padding-bottom: 0;
-}
-.content .sider {
-    width: 300px;
 }

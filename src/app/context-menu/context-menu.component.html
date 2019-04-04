@@ -1,0 +1,8 @@
+<ul nz-menu [nzMode]="'inline'" [nzSelectable]="false" style="width: 160px;">
+  <li nz-menu-item *ngIf="type==='folder'" (click)="addCode()">
+    <i nz-icon type="plus"></i>添加代码块
+  </li>
+  <li nz-menu-item (click)="delCode()">
+    <i nz-icon type="delete"></i>删除
+  </li>
+</ul>

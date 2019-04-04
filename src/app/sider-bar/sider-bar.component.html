@@ -1,0 +1,19 @@
+<ul nz-menu [nzMode]="'inline'" style="width: 240px; border: none;">
+  <li nz-submenu *ngFor="let item of items; let i = index" [nzOpen]="item.open">
+    <span class="title" title (contextmenu)="contextMenu('folder', i)">
+      <i nz-icon type="folder"></i>
+      {{item.label}}
+    </span>
+    <ul *ngIf="item.children">
+      <li nz-menu-item *ngFor="let child of item.children; let j = index" (contextmenu)="contextMenu('code', [i, j])">
+        <i nz-icon type="code"></i>
+        <input *ngIf="child.editing" nz-input appFocus placeholder="请输入代码块名称" style="width: 140px" [(ngModel)]="child.label" (keyup.enter)="createCode(child, [i, j])" (blur)="createCode(child, [i, j])" />
+        <span *ngIf="!child.editing" (click)="getCode(child.value)" style="display: inline-block; width: 100%; height: 100%;">{{child.label}}</span>
+      </li>
+    </ul>
+  </li>
+</ul>
+<!-- 右键菜单 -->
+<div class="ctxMenu" style="display: none" #ctxMenu>
+  <app-context-menu (operateCode)="operateCode($event)" [type]="contextMenuType"></app-context-menu>
+</div>

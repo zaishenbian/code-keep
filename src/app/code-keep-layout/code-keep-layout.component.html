@@ -1,13 +1,24 @@
-<div class="code-keep-layout p-grid p-dir-col">
+<!-- <div class="code-keep-layout p-grid p-dir-col">
   <div class="p-col-fixed header">
     CodeKeep
   </div>
   <div class="p-grid p-col content">
     <div class="p-col-fixed sider">
-      menu
+      <app-sider-bar></app-sider-bar>
     </div>
     <div class="p-col code">
       <app-code-editor></app-code-editor>
     </div>
   </div>
-</div>
+</div> -->
+<nz-layout class="code-keep-layout">
+  <nz-header class="header">CodeKeep</nz-header>
+  <nz-layout class="layout">
+    <nz-sider class="sider">
+      <app-sider-bar></app-sider-bar>
+    </nz-sider>
+    <nz-content class="content">
+      <app-code-editor></app-code-editor>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

@@ -8,21 +8,35 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
 import { CodeKeepLayoutComponent } from './code-keep-layout/code-keep-layout.component';
+import { SiderBarComponent } from './sider-bar/sider-bar.component';
+import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
+import { HttpClientModule } from '@angular/common/http';
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
+import { ContextMenuComponent } from './context-menu/context-menu.component';
+import { FocusDirective } from './common-directive/focus.directive';
+
+registerLocaleData(en);
 
 @NgModule({
   declarations: [
     AppComponent,
     CodeEditorComponent,
-    CodeKeepLayoutComponent
+    CodeKeepLayoutComponent,
+    SiderBarComponent,
+    ContextMenuComponent,
+    FocusDirective
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     CovalentCodeEditorModule,
-    FormsModule
+    FormsModule,
+    NgZorroAntdModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
