@@ -1,7 +1,49 @@
-<td-code-editor 
-  style="height: 100%"
-  theme="vs-dark"
-  flex
-  language="javascript"
-  [(ngModel)]="code">
-</td-code-editor>
+<form nz-form [formGroup]="codeEditorForm" (ngSubmit)="submitForm($event, codeEditorForm.value)">
+  <!-- 代码名称 -->
+  <nz-form-item>
+    <nz-form-label [nzSpan]="4" nzRequired>代码块名称</nz-form-label>
+    <nz-form-control [nzSpan]="19" nzHasFeedback>
+      <input nz-input formControlName="codeName" placeholder="请输入代码块名称" />
+      <nz-form-explain *ngIf="
+            (codeEditorForm.get('codeName')?.dirty && codeEditorForm.get('codeName')?.errors) ||
+            codeEditorForm.get('codeName')?.pending
+          ">
+        <ng-container *ngIf="codeEditorForm.get('userName')?.hasError('required')">
+          请输入代码块名称!
+        </ng-container>
+        <ng-container *ngIf="codeEditorForm.get('userName')?.hasError('duplicated')">
+          代码块名称已存在!
+        </ng-container>
+        <ng-container *ngIf="codeEditorForm.get('userName')?.pending">
+          正在验证...
+        </ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <!-- 代码描述 -->
+  <nz-form-item>
+    <nz-form-label [nzSpan]="4" nzRequired>代码块描述</nz-form-label>
+    <nz-form-control [nzSpan]="19">
+      <textarea formControlName="description" nz-input rows="4" placeholder="请输入代码块描述"></textarea>
+      <nz-form-explain
+        *ngIf="codeEditorForm.get('description')?.dirty && codeEditorForm.get('description')?.hasError('required')">
+        请输入代码块描述!</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <!-- 代码编辑器 -->
+  <nz-form-item>
+    <nz-form-label [nzSpan]="4" nzRequired>代码块内容</nz-form-label>
+    <nz-form-control [nzSpan]="19">
+      <td-code-editor style="height: 400px;" theme="vs-dark" flex language="javascript" formControlName="code">
+      </td-code-editor>
+      <nz-form-explain
+        *ngIf="codeEditorForm.get('code')?.dirty && codeEditorForm.get('code')?.hasError('required')">
+        请输入代码块内容!</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control [nzOffset]="4" [nzSpan]="19">
+      <button nz-button nzType="primary" [disabled]="!codeEditorForm.valid">确定提交</button>
+    </nz-form-control>
+  </nz-form-item>
+</form>

@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { CodeKeepService } from '../code-keep.service';
 
 interface MenuItem {
   label: string,
@@ -84,10 +85,18 @@ export class SiderBarComponent implements OnInit {
     },
   ]
 
-  constructor() { }
+  constructor(private codekeep: CodeKeepService) { }
 
   ngOnInit() {
     this.initCtxMenu()
+    this.getSiderBar()
+  }
+
+  // 获取左侧目录
+  getSiderBar() {
+    this.codekeep.getSiderBar().subscribe(res => {
+      console.log('目录', res)
+    })
   }
 
   contextMenu(type, i) {

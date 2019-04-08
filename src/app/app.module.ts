@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CovalentCodeEditorModule } from '@covalent/code-editor';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -34,7 +34,8 @@ registerLocaleData(en);
     CovalentCodeEditorModule,
     FormsModule,
     NgZorroAntdModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]
