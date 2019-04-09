@@ -1,8 +1,11 @@
 <ul nz-menu [nzMode]="'inline'" [nzSelectable]="false" style="width: 160px;">
-  <li nz-menu-item *ngIf="type==='folder'" (click)="addCode()">
-    <i nz-icon type="plus"></i>添加代码块
+  <li nz-menu-item *ngIf="type==='folder'" (click)="addFolder()">
+    <i nz-icon type="folder-add"></i>添加目录
   </li>
-  <li nz-menu-item (click)="delCode()">
+  <li nz-menu-item *ngIf="type==='folder'" (click)="addCode()">
+    <i nz-icon type="file-add"></i>添加代码块
+  </li>
+  <li nz-menu-item *ngIf="type==='code'" (click)="delCode()">
     <i nz-icon type="delete"></i>删除
   </li>
 </ul>

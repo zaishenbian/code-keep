@@ -9,12 +9,14 @@ import { AppComponent } from './app.component';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
 import { CodeKeepLayoutComponent } from './code-keep-layout/code-keep-layout.component';
 import { SiderBarComponent } from './sider-bar/sider-bar.component';
-import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
-import { HttpClientModule } from '@angular/common/http';
+import { NgZorroAntdModule, NZ_I18N, en_US, NZ_MESSAGE_CONFIG } from 'ng-zorro-antd';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { ContextMenuComponent } from './context-menu/context-menu.component';
 import { FocusDirective } from './common-directive/focus.directive';
+
+import { CodeKeepInterceptor } from './code-keep-interceptor';
 
 registerLocaleData(en);
 
@@ -37,7 +39,24 @@ registerLocaleData(en);
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [
+    {
+      provide: NZ_I18N,
+      useValue: en_US
+    },
+    { 
+      provide: NZ_MESSAGE_CONFIG, 
+      useValue: { 
+        nzDuration: 3000,
+        nzMaxStack: 7
+      }
+    },
+    { 
+      provide: HTTP_INTERCEPTORS,
+      useClass: CodeKeepInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

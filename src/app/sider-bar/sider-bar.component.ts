@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CodeKeepService } from '../code-keep.service';
+import { NzMessageService } from 'ng-zorro-antd';
 
 interface MenuItem {
   label: string,
@@ -26,66 +27,9 @@ export class SiderBarComponent implements OnInit {
 
   public contextMenuType: string
 
-  public items: MenuItem[] = [
-    {
-      label: 'test1',
-      value: '1',
-      children: [
-        {
-          label: 'test1-1',
-          value: '1-1'
-        },
-        {
-          label: 'test1-2',
-          value: '1-2'
-        }
-      ]
-    },
-    {
-      label: 'test2',
-      value: '2',
-      children: [
-        {
-          label: 'test2-1',
-          value: '2-1'
-        },
-        {
-          label: 'test2-2',
-          value: '2-2'
-        }
-      ]
-    },
-    {
-      label: 'test3',
-      value: '3',
-      children: [
-        {
-          label: 'test3-1',
-          value: '3-1'
-        },
-        {
-          label: 'test3-2',
-          value: '3-2'
-        }
-      ]
-    },
-    {
-      label: 'test4',
-      value: '4',
-      children: [
-        {
-          label: 'test4-1',
-          value: '4-1'
-        },
-        {
-          label: 'test4-2',
-          value: '4-2'
-        }
-      ]
-    },
-  ]
+  public items: MenuItem[]
 
-  constructor(private codekeep: CodeKeepService) { }
+  constructor(private codekeep: CodeKeepService, private message: NzMessageService) { }
 
   ngOnInit() {
     this.initCtxMenu()
@@ -96,6 +40,11 @@ export class SiderBarComponent implements OnInit {
   getSiderBar() {
     this.codekeep.getSiderBar().subscribe(res => {
       console.log('目录', res)
+      if (res.code === 0) {
+        this.items = res.data
+      } else {
+        this.message.create('error', res.message)
+      }
     })
   }
 
@@ -103,6 +52,8 @@ export class SiderBarComponent implements OnInit {
     this.contextMenuType = type
     // 阻止默认右键菜单的弹出
     event.preventDefault()
+    // 阻止冒泡
+    event.stopPropagation()
     let left = event.clientX
     let top = event.clientY
     this.showCtxMenu(left, top)
@@ -114,11 +65,22 @@ export class SiderBarComponent implements OnInit {
   }
 
   operateCode(data) {
-    if (data.type === 'add') {
+    if (data.type === 'addCode') {
       this.addCode()
+    } else if (data.type === 'addFolder') {
+      this.addFolder()
     } else if (data.type === 'del') {
       this.delCode()
     }
+  }
+
+  addFolder() {
+    this.items.push({
+      label: '',
+      value: '',
+      editing: true,
+      children: []
+    })
   }
 
   addCode() {
@@ -134,6 +96,21 @@ export class SiderBarComponent implements OnInit {
     let fir = this.codeIndex[0]
     let sec = this.codeIndex[1]
     this.items[fir].children.splice(sec, 1)
+  }
+
+  createFolder(node, location) {
+    if (node.label === '') {
+      this.items.splice(location, 1)
+    } else {
+      this.codekeep.createFolder(node.label).subscribe(res => {
+        if (res.code === 0) {
+          this.message.create('success', '新增目录成功')
+          delete node.editing
+        } else {
+          this.message.create('error', res.message)
+        }
+      })
+    }
   }
 
   createCode(node, location) {

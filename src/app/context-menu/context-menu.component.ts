@@ -17,7 +17,11 @@ export class ContextMenuComponent implements OnInit {
   }
 
   addCode() {
-    this.operateCode.emit({ type: 'add' })
+    this.operateCode.emit({ type: 'addCode' })
+  }
+
+  addFolder() {
+    this.operateCode.emit({ type: 'addFolder'})
   }
 
   delCode() {
