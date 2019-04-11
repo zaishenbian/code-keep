@@ -3,18 +3,18 @@
   <nz-form-item>
     <nz-form-label [nzSpan]="4" nzRequired>代码块名称</nz-form-label>
     <nz-form-control [nzSpan]="19" nzHasFeedback>
-      <input nz-input formControlName="codeName" placeholder="请输入代码块名称" />
+      <input nz-input formControlName="name" placeholder="请输入代码块名称" />
       <nz-form-explain *ngIf="
-            (codeEditorForm.get('codeName')?.dirty && codeEditorForm.get('codeName')?.errors) ||
-            codeEditorForm.get('codeName')?.pending
+            (codeEditorForm.get('name')?.dirty && codeEditorForm.get('name')?.errors) ||
+            codeEditorForm.get('name')?.pending
           ">
-        <ng-container *ngIf="codeEditorForm.get('userName')?.hasError('required')">
+        <ng-container *ngIf="codeEditorForm.get('name')?.hasError('required')">
           请输入代码块名称!
         </ng-container>
-        <ng-container *ngIf="codeEditorForm.get('userName')?.hasError('duplicated')">
+        <ng-container *ngIf="codeEditorForm.get('name')?.hasError('duplicated')">
           代码块名称已存在!
         </ng-container>
-        <ng-container *ngIf="codeEditorForm.get('userName')?.pending">
+        <ng-container *ngIf="codeEditorForm.get('name')?.pending">
           正在验证...
         </ng-container>
       </nz-form-explain>
@@ -34,10 +34,10 @@
   <nz-form-item>
     <nz-form-label [nzSpan]="4" nzRequired>代码块内容</nz-form-label>
     <nz-form-control [nzSpan]="19">
-      <td-code-editor style="height: 400px;" theme="vs-dark" flex language="javascript" formControlName="code">
+      <td-code-editor style="height: 400px;" theme="vs-dark" flex language="javascript" formControlName="content">
       </td-code-editor>
       <nz-form-explain
-        *ngIf="codeEditorForm.get('code')?.dirty && codeEditorForm.get('code')?.hasError('required')">
+        *ngIf="codeEditorForm.get('content')?.dirty && codeEditorForm.get('content')?.hasError('required')">
         请输入代码块内容!</nz-form-explain>
     </nz-form-control>
   </nz-form-item>

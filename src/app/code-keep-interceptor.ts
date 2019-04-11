@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpParams} from '@angular/common/http';
+import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpParams, HttpHeaders} from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
@@ -11,7 +11,10 @@ export class CodeKeepInterceptor implements HttpInterceptor {
     const newBody = new HttpParams({
         fromObject: req.body
     })
-    const newReq = req.clone({ body: newBody })
-    return next.handle(newReq);
+    const httpOptions: any = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded'
+    })
+    const newReq = req.clone({ body: newBody, headers: httpOptions })
+    return next.handle(newReq)
   }
 }

@@ -39,13 +39,25 @@ export class SiderBarComponent implements OnInit {
   // 获取左侧目录
   getSiderBar() {
     this.codekeep.getSiderBar().subscribe(res => {
-      console.log('目录', res)
       if (res.code === 0) {
-        this.items = res.data
+        this.items = this.formatSiderBar(res.data)
       } else {
         this.message.create('error', res.message)
       }
     })
+  }
+
+  formatSiderBar(data) {
+    data.forEach(item => {
+      if (item.children.length > 0) {
+        let children = item.children
+        children.forEach(child => {
+          child.label = child.name
+          child.value = child._id
+        })
+      }
+    })
+    return data
   }
 
   contextMenu(type, i) {
@@ -95,7 +107,15 @@ export class SiderBarComponent implements OnInit {
   delCode() {
     let fir = this.codeIndex[0]
     let sec = this.codeIndex[1]
-    this.items[fir].children.splice(sec, 1)
+    this.codekeep.delCode(this.items[fir].value, this.items[fir].children[sec].value).subscribe(res => {
+      if (res.code === 0) {
+        this.items[fir].children.splice(sec, 1)
+        this.message.create('success', '代码块删除成功')
+        this.codekeep.setCodeEmitter()
+      } else {
+        this.message.create('error', res.message)
+      }
+    })
   }
 
   createFolder(node, location) {
@@ -104,8 +124,10 @@ export class SiderBarComponent implements OnInit {
     } else {
       this.codekeep.createFolder(node.label).subscribe(res => {
         if (res.code === 0) {
+          let catalog = res.data
           this.message.create('success', '新增目录成功')
           delete node.editing
+          node.value = catalog._id
         } else {
           this.message.create('error', res.message)
         }
@@ -114,17 +136,32 @@ export class SiderBarComponent implements OnInit {
   }
 
   createCode(node, location) {
+    let fir = location[0]
+    let sec = location[1]
     if (node.label === '') {
-      let fir = location[0]
-      let sec = location[1]
       this.items[fir].children.splice(sec, 1)
     } else {
-      delete node.editing
+      this.codekeep.createCode(node.label, this.items[fir].value).subscribe(res => {
+        if (res.code === 0) {
+          let code = res.data
+          this.message.create('success', '新增代码块成功')
+          delete node.editing
+          node.value = code._id
+        } else {
+          this.message.create('error', res.message)
+        }
+      })
     }
   }
 
   getCode(codeId) {
-    console.log(codeId)
+    this.codekeep.getCode(codeId).subscribe(res => {
+      if (res.code === 0) {
+        this.codekeep.setCodeEmitter(res.data)
+      } else {
+        this.message.create('error', res.message)
+      }
+    })
   }
 
   initCtxMenu() {
