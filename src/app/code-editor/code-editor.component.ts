@@ -68,7 +68,6 @@ export class CodeEditorComponent implements OnInit {
   codeNameAsyncValidator = (control: FormControl) =>
     Observable.create((observer: Observer<ValidationErrors | null>) => {
       this.searchText$.next({ control, observer })
-      console.log(12)
     })
 
   validateCodeName() {
